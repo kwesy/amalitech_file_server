@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Distribution Platform</title>
+    <!-- Add your CSS and JavaScript files here -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" class="logo">
+                    <!-- <img src="{% static 'images/logo.png' %}" alt="Document Distribution Platform"> -->
+                    Document Distribution Platform
+                </a>
+            </div>
+            <nav>
+                <ul class="menu">
+                    <li><a href="{% url 'feed' %}">Feed</a></li>
+                    <li><a href="{% url 'search' %}">Search</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'user_profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'signup' %}">Signup</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Distribution Platform. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

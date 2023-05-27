@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ document.title }}</h2>
+  <p>{{ document.description }}</p>
+  {% if document.file.url.endswith(".pdf") %}
+    <embed src="{{ document.file.url }}" type="application/pdf" width="600" height="800">
+  {% elif document.file.url.endswith(".jpg") or document.file.url.endswith(".png") or document.file.url.endswith(".jpeg") %}
+    <img src="{{ document.file.url }}" alt="Preview">
+  {% else %}
+    <p>Preview not available for this file type.</p>
+  {% endif %}
+{% endblock %}

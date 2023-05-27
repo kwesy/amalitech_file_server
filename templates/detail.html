@@ -1,0 +1,9 @@
+<!-- Display category -->
+<p>Category: {{ document.category.name }}</p>
+
+<!-- Display tags -->
+<p>Tags:
+    {% for tag in document.tags.all %}
+        {{ tag.name }},
+    {% endfor %}
+</p>
