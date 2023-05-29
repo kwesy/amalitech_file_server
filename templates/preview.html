@@ -1,13 +1,27 @@
 {% extends 'base.html' %}
 
+{% load custom_filters %}
+{% load static %}
+
 {% block content %}
   <h2>{{ document.title }}</h2>
-  <p>{{ document.description }}</p>
-  {% if document.file.url.endswith(".pdf") %}
-    <embed src="{{ document.file.url }}" type="application/pdf" width="600" height="800">
-  {% elif document.file.url.endswith(".jpg") or document.file.url.endswith(".png") or document.file.url.endswith(".jpeg") %}
+  {% if document.file.url|endswith:".pdf" %}
+  <div class="preview-container">
+    <embed src="{{ document.file.url }}" type="application/pdf">
+    {% elif document.file.url|endswith:".jpg" or document.file.url|endswith:".png" or document.file.url|endswith:".jpeg" %}
     <img src="{{ document.file.url }}" alt="Preview">
-  {% else %}
+    {% else %}
     <p>Preview not available for this file type.</p>
-  {% endif %}
+    {% endif %}
+  
+    <div>
+      <!-- <p class="download-count">Number of Downloads: {{ document.downloads }}</p> -->
+      <p class="download-count">
+        <i class="fas fa-download download-icon"></i>  Downloads: {{ document.num_downloads }}
+        <i class="fas fa-user uploaded-by-icon download-icon"></i>  Uploaded by: {{document.uploaded_by}}
+      </p> <br>
+      <p style="max-width: 900px;">{{ document.description }} </p>
+      <a class="download-link" href="{{ document.file.url }}" download>Download</a>
+    </div>
+  </div>
 {% endblock %}

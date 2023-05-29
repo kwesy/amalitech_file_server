@@ -104,7 +104,7 @@ def logout_view(request):
 
 @login_required
 def feed(request):
-    documents = Document.objects.all()
+    documents = Document.objects.filter(target_users__id=request.user.id)
     return render(request, 'feed.html', {'documents': documents})
 
 
@@ -117,7 +117,7 @@ def search(request):
 
 @login_required
 def preview(request, document_id):
-    document = Document.objects.get(id=document_id)
+    document = Document.objects.filter(target_users__id =request.user.id, id=document_id)
     return render(request, 'preview.html', {'document': document})
 
 

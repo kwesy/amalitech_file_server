@@ -1,6 +1,9 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from feed import views
+from amalitech_file_server import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', views.feed, name='home'),
@@ -9,7 +12,7 @@ urlpatterns = [
     # path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
     path('accounts/login/', views.login_view, name='login'),
     path('accounts/logout/', views.logout_view, name='logout'),
-    path('feed', views.feed, name='feed'),
+    path('feed/', views.feed, name='feed'),
     path('search/', views.search, name='search'),
     path('preview/<int:document_id>/', views.preview, name='preview'),
     path('send-email/<int:document_id>/', views.send_email, name='send_email'),
@@ -18,4 +21,4 @@ urlpatterns = [
     # path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='account/password_reset_done.html'), name='password_reset_done'),
     # path('password-reset/confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='account/password_reset_confirm.html'), name='password_reset_confirm'),
     # path('password-reset/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='account/password_reset_complete.html'), name='password_reset_complete'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

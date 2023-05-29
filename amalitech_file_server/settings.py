@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount',
     'documents',
     'feed',
-    'users_profile'
+    'users_profile',
 ]
 
 MIDDLEWARE = [
@@ -144,6 +144,10 @@ STATICFILES_DIRS = [
 
 
 MEDIA_ROOT = BASE_DIR / 'uploads'
+MEDIA_URL = '/media/'
+
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 # Default primary key field type

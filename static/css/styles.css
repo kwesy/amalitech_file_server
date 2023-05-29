@@ -3,6 +3,13 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
+    height: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
 .container {
@@ -72,9 +79,10 @@ footer {
     color: #fff;
     padding: 10px 0;
     text-align: center;
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     bottom: 0;
+    margin-top: 60px;
 }
 
 footer p {
@@ -143,3 +151,40 @@ form button:hover {
     color: #000;
 }
 
+
+.preview-container {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.preview-container embed {
+    width: 100%;
+    height: 240px;
+}
+
+.download-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.download-link:hover {
+    background-color: #0056b3;
+}
+
+.download-count {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #666;
+    /* display: flex; */
+    align-items: center;
+}
+
+.download-icon {
+    margin-right: 5px;
+}
