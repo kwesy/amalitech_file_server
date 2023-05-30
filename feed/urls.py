@@ -15,6 +15,7 @@ urlpatterns = [
     path('feed/', views.feed, name='feed'),
     path('search/', views.search, name='search'),
     path('preview/<int:document_id>/', views.preview, name='preview'),
+    path('documents/downloads/<int:document_id>/', view=views.downloads , name='document_downlaod'),
     path('send-email/<int:document_id>/', views.send_email, name='send_email'),
 
     # path('password-reset/', auth_views.PasswordResetView.as_view(template_name='account/password_reset.html'), name='password_reset'),
