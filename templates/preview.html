@@ -17,11 +17,11 @@
     <div>
       <!-- <p class="download-count">Number of Downloads: {{ document.downloads }}</p> -->
       <p class="download-count">
-        <i class="fas fa-download download-icon"></i>  Downloads: {{ document.num_downloads }}
+        <i class="fas fa-download download-icon"></i>  <span id="nd">Downloads: {{ document.num_downloads }}</span>
         <i class="fas fa-user uploaded-by-icon download-icon"></i>  Uploaded by: {{document.uploaded_by}}
       </p> <br>
       <p style="max-width: 900px;">{{ document.description }} </p>
-      <a class="download-link" href="{{ document.file.url }}" download>Download</a>
+      <a class="download-link" href="{{ document.file.url }}" download onclick='r_d("{{ document.id }}")'>Download</a>
     </div>
   </div>
 {% endblock %}

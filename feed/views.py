@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout, get_user_model
 from django.contrib import messages
@@ -104,8 +105,18 @@ def logout_view(request):
 
 @login_required
 def feed(request):
-    documents = Document.objects.filter(target_users__id=request.user.id)
-    return render(request, 'feed.html', {'documents': documents})
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        documents = Document.objects.filter(target_users__id=request.user.id,title__icontains=search_query)
+    else:
+        documents = Document.objects.filter(target_users__id=request.user.id)
+        
+    context = {
+        'documents': documents,
+        'search_query': search_query,
+    }
+    return render(request, 'feed.html', context)
 
 
 @login_required
@@ -117,8 +128,16 @@ def search(request):
 
 @login_required
 def preview(request, document_id):
-    document = Document.objects.filter(target_users__id =request.user.id, id=document_id)
+    # document = Document.objects.get(target_users__id =request.user.id, id=document_id)
+    document = get_object_or_404(Document, target_users__id =request.user.id, id=document_id)
     return render(request, 'preview.html', {'document': document})
+
+@login_required
+def downloads(request, document_id):
+    document = get_object_or_404(Document, target_users__id =request.user.id, id=document_id)
+    document.num_downloads += 1
+    document.save()
+    return JsonResponse({'document':document.id, 'd':document.num_downloads})
 
 
 @login_required
@@ -137,14 +156,14 @@ def send_email(request, document_id):
     return render(request, 'send_email.html', {'document': document})
 
 
-@login_required
-def document_detail(request, document_id):
-    document = Document.objects.get(pk=document_id)
+# @login_required
+# def document_detail(request, document_id):
+#     document = Document.objects.get(pk=document_id)
     
-    if not document.allowed_roles.filter(user=request.user).exists():
-        messages.error(request, 'You are not authorized to access this document.')
-        return redirect('feed')
+#     if not document.allowed_roles.filter(user=request.user).exists():
+#         messages.error(request, 'You are not authorized to access this document.')
+#         return redirect('feed')
 
-    # ...
+#     # ...
 
-    return render(request, 'document/detail.html', {'document': document})
+#     return render(request, 'document/detail.html', {'document': document})

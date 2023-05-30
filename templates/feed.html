@@ -2,13 +2,25 @@
 
 {% block content %}
   <h2>Feed</h2>
-  {% for document in documents %}
-    <div>
-      <h3>{{ document.title }}</h3>
-      <p>{{ document.description }}</p>
-      <a href="{{ document.file.url }}" target="_blank">Download</a>
-      <a href="{% url 'preview' document.id %}">Preview</a>
-      <a href="{% url 'send_email' document.id %}">Send Email</a>
-    </div>
-  {% endfor %}
+  <form action="{% url 'feed' %}" method="GET" class="search-form">
+    <input type="text" name="search" placeholder="Search files" value="{{ search_query }}">
+    <button type="submit">Search</button>
+  </form>
+  <div class="feed-container">
+    {% for document in documents %}
+        <div class="file-card">
+            <div class="file-info">
+                <h3>{{ document.title }}</h3>
+                <p>{{ document.description }}</p>
+            </div>
+            <div class="file-actions">
+                <a href="{{ document.file.url }}" class="download-link">Download</a>
+                <a href="{% url 'preview' document.id %}" class="preview-link">Preview</a>
+                <a href="{% url 'send_email' document.id %}" class="send-email-link">Send Email</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No files found.</p>
+    {% endfor %}
+  </div>
 {% endblock %}
