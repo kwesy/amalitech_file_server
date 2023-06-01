@@ -147,7 +147,7 @@ def send_email(request, document_id):
         email = request.POST['email']
         subject = f"File: {document.title}"
         message = f"Please find the attached file: {document.file.url}",
-        send_mail(subject, message, 'glofirst12@gmail.com',[email], fail_silently=False, auth_user='glofirst12@gmail.com',auth_password='Samgraves1')
+        send_mail(subject, message, 'glofirst12@gmail.com',[email], fail_silently=False, auth_user='*****@gmail.com',auth_password='****')
         document.num_emails_sent += 1
         document.save()
         messages.success(request, 'Email sent successfully.')
