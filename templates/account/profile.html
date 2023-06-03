@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Profile</h2>
+  <form method="POST" action="{% url 'profile' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" value="{{ user.username }}" disabled>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="{{ user.email }}" disabled>
+    </div>
+    <div class="form-group">
+      <label for="first_name">First Name</label>
+      <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+    </div>
+    <div class="form-group">
+      <label for="last_name">Last Name</label>
+      <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+    </div>
+    <button type="submit" style="margin-bottom: 20px;">Update</button>
+  </form>
+  <a href="{% url 'password_change' %}" >Change Password</a>
+
+{% endblock %}

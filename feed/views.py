@@ -3,15 +3,19 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout, get_user_model
 from django.contrib import messages
-from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.core.mail import EmailMessage
 from documents.models import Document
 from users_profile.models import UserProfile
+import mimetypes
+from .forms import UserForm
+
 
 
 User = get_user_model()
@@ -121,14 +125,13 @@ def feed(request):
 
 @login_required
 def search(request):
-    query = request.GET.get('query')
+    query = request.GET.get('query', '')
     documents = Document.objects.filter(title__icontains=query)
     return render(request, 'search.html', {'documents': documents})
 
 
 @login_required
 def preview(request, document_id):
-    # document = Document.objects.get(target_users__id =request.user.id, id=document_id)
     document = get_object_or_404(Document, target_users__id =request.user.id, id=document_id)
     return render(request, 'preview.html', {'document': document})
 
@@ -142,28 +145,48 @@ def downloads(request, document_id):
 
 @login_required
 def send_email(request, document_id):
-    document = Document.objects.get(id=document_id)
+    file = get_object_or_404(Document,id=document_id, target_users__id =request.user.id)
     if request.method == 'POST':
-        email = request.POST['email']
-        subject = f"File: {document.title}"
-        message = f"Please find the attached file: {document.file.url}",
-        send_mail(subject, message, 'glofirst12@gmail.com',[email], fail_silently=False, auth_user='glofirst12@gmail.com',auth_password='Samgraves1')
-        document.num_emails_sent += 1
-        document.save()
+        recipient_email = request.POST['email']
+        subject = f"File: {file.title}"
+        content_type = mimetypes.guess_type(file.file.name)
+        email = EmailMessage(
+            subject,
+            'Please find the attached file: ' + file.title,
+            to=[recipient_email],
+        )
+
+        email.attach(file.file.name, file.file.read(), content_type[0])
+        email.send()
+        file.num_emails_sent += 1
+        file.save()
         messages.success(request, 'Email sent successfully.')
         return redirect('feed')
 
-    return render(request, 'send_email.html', {'document': document})
+    return render(request, 'send_email.html', {'document': file})
 
 
-# @login_required
-# def document_detail(request, document_id):
-#     document = Document.objects.get(pk=document_id)
-    
-#     if not document.allowed_roles.filter(user=request.user).exists():
-#         messages.error(request, 'You are not authorized to access this document.')
-#         return redirect('feed')
+@login_required
+def profile(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserForm(instance=user)
+    return render(request, 'account/profile.html', {'user': user, 'form': form})
 
-#     # ...
 
-#     return render(request, 'document/detail.html', {'document': document})
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('profile')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'account/change_password.html', {'form': form})
