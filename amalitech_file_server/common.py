@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,9 +81,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'amalitech',
-        'USER': 'django_admin',#'django_admin',#'inservice_admin',#'root',
-        'HOST': '127.0.0.1',
-        'PASSWORD': 'Pass123@localhost',
+        'USER': os.environ.get('DB_USER', 'django_admin'),
+        'HOST': os.environ.get('DB_HOST_ADDRESS', '127.0.0.1'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'Pass123@localhost'),
         'PORT':'3306',
         'OPTIONS':{
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
