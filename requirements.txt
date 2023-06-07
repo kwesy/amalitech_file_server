@@ -1,0 +1,7 @@
+django==4.1
+markdown
+django-filter
+requests
+psycopg2-binary
+mysqlclient
+Pillow
