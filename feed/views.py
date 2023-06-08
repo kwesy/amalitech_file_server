@@ -8,13 +8,14 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.contrib.auth import update_session_auth_hash
 from django.core.mail import EmailMessage
 from documents.models import Document
 from users_profile.models import UserProfile
 import mimetypes
 from .forms import UserForm
+
 
 
 
@@ -122,12 +123,6 @@ def feed(request):
     }
     return render(request, 'feed.html', context)
 
-
-@login_required
-def search(request):
-    query = request.GET.get('query', '')
-    documents = Document.objects.filter(title__icontains=query)
-    return render(request, 'search.html', {'documents': documents})
 
 
 @login_required

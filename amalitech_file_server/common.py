@@ -35,9 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
     'documents',
     'feed',
     'users_profile',
@@ -81,9 +78,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'amalitech',
-        'USER': os.environ.get('DB_USER', 'django_admin'),
-        'HOST': os.environ.get('DB_HOST_ADDRESS', '127.0.0.1'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'Pass123@localhost'),
+        'USER': os.getenv('DB_USER', 'django_admin'),
+        'HOST': os.getenv('DB_HOST_ADDRESS', '127.0.0.1'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'Pass123@localhost'),
         'PORT':'3306',
         'OPTIONS':{
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -134,9 +131,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    "/var/www/static/",
+    "/home/Goldberg/amalitech_file_server/static",
 ]
 
 

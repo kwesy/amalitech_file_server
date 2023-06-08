@@ -14,7 +14,7 @@
                 <p>{{ document.description }}</p>
             </div>
             <div class="file-actions">
-                <a href="{{ document.file.url }}" class="download-link">Download</a>
+                <a href="{{ document.file.url }}" class="download-link" download>Download</a>
                 <a href="{% url 'preview' document.id %}" class="preview-link">Preview</a>
                 <a href="{% url 'send_email' document.id %}" class="send-email-link">Send Email</a>
             </div>

@@ -24,7 +24,6 @@
             <nav>
                 <ul class="menu">
                     <li><a href="{% url 'feed' %}">Feed</a></li>
-                    <li><a href="{% url 'search' %}">Search</a></li>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'user_profile' %}">Profile</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
