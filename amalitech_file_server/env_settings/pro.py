@@ -1,10 +1,13 @@
 import os
 
+from amalitech_file_server.common import DATABASES
+
 SECRET_KEY = os.getenv('SECRET_KEY','')
 
 DEBUG = False
 ALLOWED_HOSTS = ['Goldberg.pythonanywhere.com']
 
+DATABASES['default']['NAME'] = 'Goldberg$amalitech'
 
 
 ACCOUNT_ACTIVATION_DAYS = 7
