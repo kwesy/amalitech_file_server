@@ -1,5 +1,3 @@
-SECRET_KEY = 'django-insecure-=hf+7_$!#%v#2x+(qdpnj#40luq58v_x9ea9iq9pn_ll92aj=i'
-
 DEBUG = True
 ALLOWED_HOSTS = []
 
