@@ -231,8 +231,14 @@ form button:hover {
 }
 
 .file-info p {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     margin: 0;
     color: #777;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: inherit;
 }
 
 .file-actions {
@@ -293,4 +299,6 @@ form button:hover {
         width: 100%;
     }
 }
+
+
 

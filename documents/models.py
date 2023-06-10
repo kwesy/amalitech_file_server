@@ -19,7 +19,7 @@ class Tag(models.Model):
 
 class Document(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(max_length=250)
     file = models.FileField(upload_to='document_uploads', validators=[
         FileExtensionValidator(allowed_extensions=['pdf', 'jpg', 'jpeg', 'png']),
         #FileSizeValidator(max_size=10485760)  # 10MB
