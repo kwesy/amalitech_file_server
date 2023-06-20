@@ -1,3 +1,4 @@
 uploads*
 amalitech_file_server/env_settings/dev.py
 sent_emails*
+*__pycache__*

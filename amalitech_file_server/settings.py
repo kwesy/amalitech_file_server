@@ -1,2 +1,2 @@
 from .common import *
-from .env_settings.pro import *
+from .env_settings.dev import *

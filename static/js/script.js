@@ -5,5 +5,4 @@ function r_d(id){
    }
 })
    .then(response => response.json())
-   .then(text => document.getElementById('nd').innerText = "Downloads: "+ text.d)
 }

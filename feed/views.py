@@ -8,12 +8,17 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from django.core.mail import EmailMessage
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.core.mail import EmailMessage, send_mail
+from django.utils.html import strip_tags
 from documents.models import Document
 from users_profile.models import UserProfile
 import mimetypes
+
+from users_profile.validators import validate_password_special_and_capital
 from .forms import UserForm
 
 
@@ -26,6 +31,30 @@ def home(request):
     return render(request, 'feed.html')
 
 
+def send_activation_email(request,user):
+    subject = 'Activate Your Account'
+    current_site = get_current_site(request)
+    context = {
+        'user': user,
+        'domain': current_site.domain,
+        'expiration_time': '24 hours',
+        'support_email': 'scitymail4@gmail.com',
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': default_token_generator.make_token(user),
+    }
+    html_message = render_to_string('account/activation_email.html', context)
+    plain_message = strip_tags(html_message)
+    from_email = 'noreply@amalitechexample.com'
+    to_email = user.email
+
+    email = EmailMessage(subject, html_message, from_email=from_email,to=[to_email])
+    email.content_subtype = 'html'
+    email.send()
+
+    # send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+
+
+
 def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -36,7 +65,19 @@ def signup(request):
 
         if password != password1:
             messages.error(request, 'password doesn\'t match')
-            redirect('signup')
+            return redirect('signup')
+
+        try:
+            # Validate the password using Django's password validators
+            validate_password(password)
+            
+            validate_password_special_and_capital(password)
+            
+        except ValidationError as e:
+
+            error_message = '\n'.join(e.messages)
+            messages.error(request, error_message)
+            return redirect('signup')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists.')
@@ -48,18 +89,7 @@ def signup(request):
 
         user_profile = UserProfile.objects.create(user=user)
         user_profile.generate_verification_token()
-
-        current_site = get_current_site(request)
-        mail_subject = 'Activate your account'
-        message = render_to_string('account/activation_email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': default_token_generator.make_token(user),
-        })
-        to_email = email
-        email = EmailMessage(mail_subject, message, to=[to_email])
-        email.send()
+        send_activation_email(request, user)
 
         messages.success(request, 'Account created successfully. Please check your email for activation.')
         return redirect('login')
@@ -135,23 +165,31 @@ def downloads(request, document_id):
     document = get_object_or_404(Document, target_users__id =request.user.id, id=document_id)
     document.num_downloads += 1
     document.save()
-    return JsonResponse({'document':document.id, 'd':document.num_downloads})
+    return JsonResponse({})
 
 
 @login_required
-def send_email(request, document_id):
+def send_file_email(request, document_id):
     file = get_object_or_404(Document,id=document_id, target_users__id =request.user.id)
     if request.method == 'POST':
         recipient_email = request.POST['email']
         subject = f"File: {file.title}"
         content_type = mimetypes.guess_type(file.file.name)
+        context = {
+            'recipient_name':request.user.username,
+            'company_name': 'company name',
+            'doc_name': file.title,
+            'support_email': 'scitymail4@gmail.com'
+        }
+        html_message = render_to_string('send_file_email.html', context)
         email = EmailMessage(
             subject,
-            'Please find the attached file: ' + file.title,
+            html_message,
             to=[recipient_email],
         )
 
         email.attach(file.file.name, file.file.read(), content_type[0])
+        email.content_subtype = 'html'
         email.send()
         file.num_emails_sent += 1
         file.save()

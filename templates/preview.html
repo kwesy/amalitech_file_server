@@ -8,21 +8,41 @@
   {% if document.file.url|endswith:".pdf" %}
   <div class="preview-container">
     <embed src="{{ document.file.url }}" type="application/pdf">
-    {% elif document.file.url|endswith:".jpg" or document.file.url|endswith:".png" or document.file.url|endswith:".jpeg" %}
+
+    {% elif document.file.url|endswith:".jpg .jpeg .png .gif .tiff .bmp .svg" %}
     <img src="{{ document.file.url }}" alt="Preview">
+    
+    {% elif document.file.url|endswith:".mp4 .mov .avi .mkv" %}
+    <video id="video-player" controls>
+      <source src="{{ document.file.url }}">
+    </video>
+
+    {% elif document.file.url|endswith:".mp3 .wav .aac .ogg .ac3 .midi" %}
+    <audio id="audio-player" controls>
+      <source src="{{ document.file.url }}">
+    </audio>
+
     {% else %}
     <p>Preview not available for this file type.</p>
     {% endif %}
   
     <div>
       <!-- <p class="download-count">Number of Downloads: {{ document.downloads }}</p> -->
-      <p class="download-count">
+      <!-- <p class="download-count">
         <i class="fas fa-download download-icon"></i>  <span id="nd">Downloads: {{ document.num_downloads }}</span>
         <i class="fas fa-envelope uploaded-by-icon download-icon"></i>  Emails sent: {{document.num_emails_sent}}
-        <!-- <i class="fas fa-user uploaded-by-icon download-icon"></i>  Uploaded by: {{document.uploaded_by}} -->
-      </p> <br>
+      </p> <br> -->
       <p style="max-width: 900px;">{{ document.description }} </p>
       <a class="download-link" href="{{ document.file.url }}" download onclick='r_d("{{ document.id }}")'>Download</a>
     </div>
   </div>
+
+  <script>
+    // Video player initialization
+    const videoPlayer = new Plyr('#video-player');
+
+    // Audio player initialization
+    const audioPlayer = new Plyr('#audio-player');
+
+  </script>
 {% endblock %}
