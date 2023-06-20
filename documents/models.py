@@ -1,6 +1,8 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
+from .validators import FileSizeValidator
 
 
 
@@ -21,8 +23,8 @@ class Document(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     file = models.FileField(upload_to='document_uploads', validators=[
-        FileExtensionValidator(allowed_extensions=['pdf', 'jpg', 'jpeg', 'png']),
-        #FileSizeValidator(max_size=10485760)  # 10MB
+        FileExtensionValidator(allowed_extensions=['pdf','jpg','jpeg','png','gif','tiff','bmp','svg','doc','docx','xls','xlsx','csv','ppt','pptx','txt','mp4','mov','avi','mkv','mp3','wav','aac','ogg','ac3','midi','rar','zip']),
+        FileSizeValidator(max_size=2**19 * 10)  # 10MB
     ])
     num_downloads = models.PositiveIntegerField(default=0)
     num_emails_sent = models.PositiveIntegerField(default=0)
@@ -34,6 +36,11 @@ class Document(models.Model):
 
     def __str__(self):
         return self.title
+    
+    @property
+    def extension(self):
+        name, extension = os.path.splitext(self.file.name)
+        return extension
 
 
 

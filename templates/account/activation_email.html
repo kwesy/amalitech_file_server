@@ -1,10 +1,18 @@
-{% autoescape off %}
-
-Hi {{ user.username }}, 
-
-Please click the link below to activate your account:
-<a href="{{ domain }}{% url 'activate' uidb64=uid token=token %}">
-    Activate Account
-</a>
-
-{% endautoescape %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activate Your Account</title>
+</head>
+<body>
+    <p>Dear {{ user.username }},</p>
+    <p>Thank you for signing up for our platform! We're excited to have you on board. Before you can start using your account, please activate it by clicking the activation link below:</p>
+    <p><a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">activate account</a></p>
+    <p>If you are unable to click the activation link, you can copy and paste the URL below into your browser's address bar.</p>
+    <p><a href="#">http://{{ domain }}{% url 'activate' uidb64=uid token=token %}</a></p>
+    <p>Please note that the activation link is valid for {{ expiration_time }}. After the expiration time, you may need to request a new activation link.</p>
+    <p>If you did not sign up for our platform, please disregard this email.</p>
+    <p>If you encounter any issues or have any questions, feel free to contact our support team at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+    <p>Thank you again for joining us. We look forward to serving you!</p>
+    <p>Best regards,<br>{{ company_name }}</p>
+</body>
+</html>

@@ -8,6 +8,7 @@ body {
     padding: 0;
     overflow-y: auto;
 
+
     display: flex;
     flex-direction: column;
 }
@@ -169,6 +170,17 @@ form button:hover {
     width: 100%;
     height: 240px;
 }
+
+.plyr--video {
+    width: 60%;
+    height: 240px;
+}
+
+.plyr--audio {
+    margin-top: 200px;
+    width: 60%;
+}
+
 
 /* .download-link,
 .preview-link,

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>File Delivery</title>
+    <style>
+        /* Add your custom email styles here */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #333333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            background-color: #ffffff;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            color: #333333;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .link-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>File Delivery</h1>
+        <p>Dear {{ recipient_name }},</p>
+        <p>We are pleased to share a file with you. Please find the attached file {{doc_name}} below.</p>
+        <p>If you have any questions or need further assistance, please don't hesitate to contact us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+        <p>Thank you for using our service.</p>
+        <p>Best regards,<br>{{ company_name }}</p>
+    </div>
+</body>
+</html>
