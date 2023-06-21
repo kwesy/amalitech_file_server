@@ -9,10 +9,10 @@
   <div class="preview-container">
     <embed src="{{ document.file.url }}" type="application/pdf">
 
-    {% elif document.file.url|endswith:".jpg .jpeg .png .gif .tiff .bmp .svg" %}
+    {% elif document.file.url|endswith:".jpg .jpeg .png .gif .webp .tiff .tif .bmp .svg" %}
     <img src="{{ document.file.url }}" alt="Preview">
     
-    {% elif document.file.url|endswith:".mp4 .mov .avi .mkv" %}
+    {% elif document.file.url|endswith:".mp4 .mov .avi .mkv .wmv" %}
     <video id="video-player" controls>
       <source src="{{ document.file.url }}">
     </video>
