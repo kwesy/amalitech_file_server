@@ -163,7 +163,8 @@ form button:hover {
 
 .preview-container {
     max-width: 420px;
-    margin: 0 auto;
+    margin: auto;
+    margin-left: 0px;
 }
 
 .preview-container embed {

@@ -5,8 +5,8 @@
 
 {% block content %}
   <h2>{{ document.title }}</h2>
-  {% if document.file.url|endswith:".pdf" %}
   <div class="preview-container">
+    {% if document.file.url|endswith:".pdf" %}
     <embed src="{{ document.file.url }}" type="application/pdf">
 
     {% elif document.file.url|endswith:".jpg .jpeg .png .gif .webp .tiff .tif .bmp .svg" %}
