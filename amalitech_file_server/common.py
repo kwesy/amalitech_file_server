@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'corsheaders',
     'documents',
     'feed',
     'users_profile',
@@ -144,14 +143,8 @@ MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/media/'
 
 
-X_FRAME_OPTIONS = '*'
-# CORS_ALLOW_ALL_ORIGINS = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-CORS_ALLOWED_ORIGINS = [
-    "https://cdnjs.cloudflare.com",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
 
 
 # Default primary key field type
