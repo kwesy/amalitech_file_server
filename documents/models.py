@@ -23,7 +23,7 @@ class Document(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     file = models.FileField(upload_to='document_uploads', validators=[
-        FileExtensionValidator(allowed_extensions=['pdf','jpg','jpeg','png','gif','tiff','bmp','svg','doc','docx','xls','xlsx','csv','ppt','pptx','txt','mp4','mov','avi','mkv','mp3','wav','aac','ogg','ac3','midi','rar','zip']),
+        FileExtensionValidator(allowed_extensions=['pdf','jpg','jpeg','png','gif','webp','tiff','tif','bmp','svg','doc','docx','xls','xlsx','csv','ppt','pptx','txt','mp4','mov','avi','mkv','wmv','mp3','wav','aac','ogg','ac3','midi']),
         FileSizeValidator(max_size=2**19 * 10)  # 10MB
     ])
     num_downloads = models.PositiveIntegerField(default=0)
