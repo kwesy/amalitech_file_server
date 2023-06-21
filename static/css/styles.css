@@ -171,6 +171,11 @@ form button:hover {
     height: 240px;
 }
 
+.preview-container img {
+    width: 207px;
+    height: 120px;
+}
+
 .plyr--video {
     width: 60%;
     height: 240px;

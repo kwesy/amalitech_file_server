@@ -175,10 +175,12 @@ def send_file_email(request, document_id):
         recipient_email = request.POST['email']
         subject = f"File: {file.title}"
         content_type = mimetypes.guess_type(file.file.name)
+        sender = request.user.username
         context = {
-            'recipient_name':request.user.username,
-            'company_name': 'company name',
+            'sender_name': sender.capitalize(),
+            'company_name': 'Amalitech',
             'doc_name': file.title,
+            'category':file.category,
             'support_email': 'scitymail4@gmail.com'
         }
         html_message = render_to_string('send_file_email.html', context)
