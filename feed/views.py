@@ -143,9 +143,10 @@ def feed(request):
     search_query = request.GET.get('search', '')
 
     if search_query:
-        documents = Document.objects.filter(target_users__id=request.user.id,title__icontains=search_query)
+        # documents = Document.objects.filter(target_users__id=request.user.id,title__icontains=search_query)
+        documents = Document.objects.filter(title__icontains=search_query)
     else:
-        documents = Document.objects.filter(target_users__id=request.user.id)
+        documents = Document.objects.all()
         
     context = {
         'documents': documents,
